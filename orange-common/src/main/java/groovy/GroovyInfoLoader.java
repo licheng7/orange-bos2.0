@@ -4,6 +4,7 @@ import groovy.entity.GroovyInfo;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -25,19 +26,29 @@ public class GroovyInfoLoader {
     final String BREAK = "-";
     final HashMap<Long, GroovyObject> groovyObjCache = new HashMap<>();
     final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    static GroovyInfoLoader groovyInfoLoader = new GroovyInfoLoader();
 
-    public GroovyInfoLoader() {
+    private GroovyInfoLoader() {
         parent = this.getClass().getClassLoader();
         loader = new GroovyClassLoader(parent);
     }
 
-    public GroovyObject loadGroovyById(long id) {
+    public static GroovyInfoLoader getInstance() {
+        return groovyInfoLoader;
+    }
+
+    /**
+     * 根据id获取groovy对应的java对象
+     * @param id
+     * @return
+     */
+    public GroovyObject loadGroovyObjById(long id) {
         readWriteLock.readLock().lock();
         GroovyObject groovyObj = groovyObjCache.get(id);
         readWriteLock.readLock().unlock();
         if(ObjectUtils.isEmpty(groovyObj)) {
             readWriteLock.writeLock().lock();
-            GroovyInfo info = new GroovyInfo(1L, "groovy脚本1", "", "", 1, System.currentTimeMillis(), System.currentTimeMillis());
+            GroovyInfo info = new GroovyInfo(id, "groovy脚本1", "", "", 1, System.currentTimeMillis(), System.currentTimeMillis());
             groovyObj = this.createGroovyObj(info);
             groovyObjCache.put(id, groovyObj);
             readWriteLock.writeLock().unlock();
@@ -45,6 +56,11 @@ public class GroovyInfoLoader {
         return groovyObj;
     }
 
+    /**
+     * 根据groovy脚本创建java对象
+     * @param info
+     * @return
+     */
     private GroovyObject createGroovyObj(GroovyInfo info) {
         String scriptName = new StringBuilder().append(info.getName()).append(BREAK).append(info.getId()).toString();
         Class groovyClass = loader.parseClass(info.getScriptText(), scriptName);
