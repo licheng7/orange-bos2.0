@@ -43,12 +43,27 @@ public class GroovyInfoLoader {
      * @return
      */
     public GroovyObject loadGroovyObjById(long id) {
+        GroovyObject groovyObj;
         readWriteLock.readLock().lock();
-        GroovyObject groovyObj = groovyObjCache.get(id);
+        groovyObj = groovyObjCache.get(id);
         readWriteLock.readLock().unlock();
         if(ObjectUtils.isEmpty(groovyObj)) {
             readWriteLock.writeLock().lock();
-            GroovyInfo info = new GroovyInfo(id, "groovy脚本1", "", "", 1, System.currentTimeMillis(), System.currentTimeMillis());
+
+            GroovyInfo info = new GroovyInfo(id, "groovy脚本1",
+                    "package groovy_scripts\n" +
+                            "\n" +
+                            "import groovy.interfaces.GroovyTest1Interf\n" +
+                            "\n" +
+                            "class GroovyTest1Script implements GroovyTest1Interf {\n" +
+                            "\n" +
+                            "    @Override\n" +
+                            "    String testMethod1(String p) {\n" +
+                            "        println 'hello ' + p;\n" +
+                            "        return \"thanks orange\";\n" +
+                            "    }\n" +
+                            "}", "", 1, System.currentTimeMillis(), System.currentTimeMillis());
+
             groovyObj = this.createGroovyObj(info);
             groovyObjCache.put(id, groovyObj);
             readWriteLock.writeLock().unlock();
