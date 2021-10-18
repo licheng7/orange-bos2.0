@@ -2,16 +2,25 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="bos-client" />
         <module name="orange-common" />
+        <module name="bos-provider" />
+        <module name="bos-controller" />
+        <module name="bos-provider-facade" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="bos-client" options="-parameters" />
+      <module name="bos-controller" options="-parameters" />
+      <module name="bos-provider" options="-parameters" />
+      <module name="bos-provider-facade" options="-parameters" />
       <module name="orange-bos" options="-parameters" />
       <module name="orange-common" options="-parameters" />
     </option>

@@ -7,20 +7,24 @@
  */
 package groovy;
 
+import groovy.lang.GroovyObject;
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+@Slf4j
 public class GroovyProxyObjLoader {
 
-    public void register(long id, String interfacesStr) {
-        Class clazz;
-        try {
-            clazz = Class.forName(interfacesStr);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("{"+interfacesStr+"}接口不存在");
-        }
+    final HashMap<Long, GroovyObject> groovyProxyCache = new HashMap<>();
+    final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-        this.createProxy(id, clazz);
+    final HashMap<Long, Object> groovyProxyObjCache = new HashMap<>();
+
+    public <T> void loadProxyObjById(long id, Class<T> t) {
+        T proxy = this.createProxy(id, t);
     }
 
     private <T> T createProxy(long id, Class<T> t) {

@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: bos-provider
+    version: 1.0.0
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 62.234.131.125:8848
+
+dubbo:
+  application:
+    #name=服务名
+    name: bos-provider
+    # 项目访问端口
+    qos-port: 8291
+    version: 1.0.0
+  consumer:
+    check: false
+  scan:
+    # 上述的服务提供者的实现类所在的包
+    base-packages: org.orange.bos.provider.api
+  protocol:
+    #name=
+    name: dubbo
+    port: -1
+  registry:
+    #spring-cloud=托管到spring-cloud的注册中心，可改为nacos://10.21.32.22:123，但注册中心的每个dubbo服务会额外出现两个多余的服务，技术所限，原因未知。改为spring-cloud则无此毛病
+    address: nacos://62.234.131.125:8848

@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>orange-common</name>
-    <groupId>org.orange</groupId>
-    <artifactId>orange-common</artifactId>
+    <name>bos-client</name>
+    <groupId>org.orange.bos</groupId>
+    <artifactId>bos-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <description>公共类</description>
+    <description>BOS系统客户端，用于BOS组件收集</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -48,12 +48,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-dubbo</artifactId>
         </dependency>
     </dependencies>
 </project>
